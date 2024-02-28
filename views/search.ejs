@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../public/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/fonts.css">
+
+  <title>BeatLab</title>
+</head>
+
+<body>
+  <header class="header">
+    <section class="header_section">
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-default">
+          <div class="container-navbar">
+            <div class="navbar-logo">
+              <a class="navbar-brand" href="/home">
+                <img src="/images/logos.svg" alt="logo">
+              </a>
+            </div>
+            <ul class="navbar-links">
+              <li class="active"><a href="/home">Home</a></li>
+              <li><a href="/clips">Clips</a></li>
+              <li>
+                <form class="navbar-search" action="/search" method="get">
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit"><img src="/images/search.png" alt="Search"></button>
+                </form>
+              </li>
+              <div class="wrapper-profile">
+                <li class="nickname-cont">
+                  <% if (user && user.role==='admin' ) { %>
+                    <a href="/admin">Admin</a>
+                    <% } else { %>
+                      <a href="/home">
+                        <%= user.username %>
+                      </a>
+                      <% } %>
+                </li>
+                <li>
+                  <a href="/logout">Logout</a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <main class="main">
+    <section class="main_section">
+      <div class="section-wrapper">
+        <div class="music-line-container1">
+          <div class="music-line-header">
+            <h2>Today's recommendations</h2>
+          </div>
+          <div id="slider" class="slick-slider-content">
+            <% tracks1.forEach((track)=> { %>
+              <div class="slick-slide">
+                <img src="<%= track.image %>" alt="<%= track.title %>">
+                <h3>
+                  <%= track.title %>
+                </h3>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+      </div>
+  </main>
+
+
+  <footer class="footer">
+    <section class="footer_section"></section>
+  </footer>
+
+</body>
+
+</html>

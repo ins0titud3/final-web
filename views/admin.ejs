@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../public/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/fonts.css">
+
+  <title>BeatLab</title>
+</head>
+
+<body>
+  <header class="header">
+    <section class="header_section">
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-default">
+          <div class="container-navbar">
+            <div class="navbar-logo">
+              <a class="navbar-brand" href="/home">
+                <img src="/images/logos.svg" alt="logo">
+              </a>
+            </div>
+            <ul class="navbar-links">
+              <li class="active"><a href="/home">Home</a></li>
+              <li><a href="/clips">Clips</a></li>
+              <li>
+                <form class="navbar-search" action="/search" method="get">
+                  <input type="text" name="q" placeholder="Поиск...">
+                  <button type="submit"><img src="/images/search.png" alt="Search"></button>
+                </form>
+              </li>
+              <li><a href="/library">Library</a></li>
+              <div class="wrapper-profile">
+                <li class="nickname-cont"><a href="/home">
+                    <%= user.username %>
+                  </a></li>
+                <li><a href="/logout">Logout</a></li>
+              </div>
+
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <main class="main">
+    <section class="main_section">
+      <div class="section-wrapper">
+        <div class="post-header">
+          <h2 class="admin-page-title">Create Post</h2>
+        </div>
+        <form action="/admin/create" method="POST" class="admin-page-form">
+          <label for="title" class="admin-page-label">Title:</label>
+          <input type="text" id="title" name="title" class="admin-page-input" required>
+          <label for="description" class="admin-page-label">Description:</label>
+          <textarea id="description" name="description" class="admin-page-textarea" required></textarea>
+          <label for="images" class="admin-page-label">Images:</label>
+          <input type="file" id="images" name="images" class="admin-page-file" multiple required>
+          <button type="submit" class="admin-page-button">Create Post</button>
+        </form>
+      </div>
+      <div class="section-wrapper">
+        <div class="post-header">
+          <h2 class="admin-page-title">Delete Post</h2>
+        </div>
+        <form action="/admin/delete" method="DELETE" class="admin-page-form">
+          <label for="delete-post-id" class="admin-page-label">Find by Title:</label>
+          <input type="text" id="delete-post-id" name="delete-post-id" class="admin-page-input" required>
+          <button type="submit" class="admin-page-button">Delete Post</button>
+        </form>
+      </div>
+      <div class="section-wrapper">
+        <div class="post-header">
+          <h2 class="admin-page-title">Update Post</h2>
+        </div>
+
+        <input type="hidden" name="_method">
+        <label for="update-post-id" class="admin-page-label">Find by Title:</label>
+        <input type="text" id="update-post-title" name="update-post-title" class="admin-page-input" required>
+        <label for="update-title" class="admin-page-label">New Title:</label>
+        <input type="text" id="update-title" name="update-title" class="admin-page-input" required>
+        <label for="update-description" class="admin-page-label">New Description:</label>
+        <textarea id="update-description" name="update-description" class="admin-page-textarea" required></textarea>
+        <label for="update-images" class="admin-page-label">New Images:</label>
+        <input type="file" id="update-images" name="update-images" class="admin-page-file" multiple required>
+        <button onclick="updatePost()" class="admin-page-button">Update Post</button>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+          async function updatePost() {
+
+            const title = document.getElementById('update-post-title').value
+            try {
+              const response = await axios.post("/admin/update", {
+                title: title,
+                new_title: 'новый title',
+                description: 'новое описание',
+                images: ['новое изображение'],
+              })
+
+
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+
+              const data = await response.json()
+
+              console.log(data)
+            } catch (error) {
+
+              console.error(error)
+
+              alert('Internal Server Error')
+            }
+          }
+        </script>
+      </div>
+    </section>
+  </main>
+
+
+
+  <footer class="footer">
+    <section class="footer_section"></section>
+  </footer>
+</body>
+
+</html>

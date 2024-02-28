@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../public/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/fonts.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <title>BeatLab</title>
+</head>
+
+<body>
+  <header class="header">
+    <section class="header_section">
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-default">
+          <div class="container-navbar">
+            <div class="navbar-logo">
+              <a class="navbar-brand" href="/home">
+                <img src="/images/logos.svg" alt="logo">
+              </a>
+            </div>
+            <ul class="navbar-links">
+              <li class="active"><a href="/home">Home</a></li>
+              <li><a href="/clips">Clips</a></li>
+              <li>
+                <form class="navbar-search" action="/search" method="get">
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit"><img src="/images/search.png" alt="Search"></button>
+                </form>
+              </li>
+              <div class="wrapper-profile">
+                <li class="nickname-cont">
+                  <% if (user && user.role==='admin' ) { %>
+                    <a href="/admin">Admin</a>
+                    <% } else { %>
+                      <a href="/home">
+                        <%= user.username %>
+                      </a>
+                      <% } %>
+                </li>
+                <li>
+                  <a href="/logout">Logout</a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <main class="main">
+    <section class="main_section">
+      <div class="section-wrapper">
+        <div class="music-line-container1">
+          <div class="music-line-header">
+            <h2>Today's recommendations</h2>
+          </div>
+          <div id="slider" class="slick-slider-content">
+            <% tracks1.forEach((track)=> { %>
+              <div class="slick-slide">
+                <img src="<%= track.image %>" alt="<%= track.title %>">
+                <h3>
+                  <%= track.title %>
+                </h3>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-wrapper">
+        <div class="wrapper-albums">
+          <div class="albums-header">
+            <h2>Albums</h2>
+          </div>
+          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <% posts.forEach((post, index)=> { %>
+                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                  <img src="/images/<%= post.images[0] %>" class="d-block w-100" alt="<%= post.title %>">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>
+                      <%= post.title %>
+                    </h5>
+                    <p>
+                      <%= post.description %>
+                    </p>
+                  </div>
+                </div>
+                <% }); %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="section-wrapper" id="genre-section">
+        <div class="music-line-container1">
+          <div class="music-line-header">
+            <h2>Genres of Music</h2>
+          </div>
+          <div>
+            <form action="/home" method="get" class="form-genres">
+              <label for="genre">Select a genre:</label>
+              <select name="genre" id="genre">
+                <option value="POP">POP</option>
+                <option value="HIP_HOP_RAP">HIP HOP/RAP</option>
+                <option value="DANCE">DANCE</option>
+                <option value="ELECTRONIC">ELECTRONIC</option>
+                <option value="ALTERNATIVE">ALTERNATIVE</option>
+                <option value="ROCK">ROCK</option>
+                <option value="LATIN">LATIN</option>
+                <option value="COUNTRY">COUNTRY</option>
+                <option value="AFRO_BEATS">AFRO BEATS</option>
+                <option value="WORLDWIDE">WORLDWIDE</option>
+                <option value="REGGAE_DANCE_HALL">REGGAE/DANCE HALL</option>
+                <option value="HOUSE">HOUSE</option>
+                <option value="K_POP">K-POP</option>
+                <option value="FRENCH_POP">FRENCH POP</option>
+                <option value="SINGER_SONGWRITER">SINGER/SONGWRITER</option>
+              </select>
+              <button type="submit">Find</button>
+            </form>
+          </div>
+
+          <div id="slider" class="slick-slider-content">
+            <% tracks2.forEach((track)=> { %>
+              <div class="slick-slide">
+                <img src="<%= track.image %>" alt="<%= track.title %>">
+                <h3>
+                  <%= track.title %>
+                </h3>
+              </div>
+              <% }); %>
+          </div>
+        </div>
+      </div>
+
+
+  </main>
+
+
+  <footer class="footer">
+    <section class="footer_section"></section>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
