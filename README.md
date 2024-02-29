@@ -18,6 +18,9 @@ nodemon server.js
 ```
 Access the Platform: Access the BeatLab platform by navigating to http://localhost:3000 in your web browser.
 
+## Or use deployed link of site
+https://final-web-1.onrender.com
+
 ## APIs Used
 1) Shazam API https://rapidapi.com/WaveTech/api/shazam-core7/
 2) Celebrity API https://api-ninjas.com/api/celebrity
