@@ -24,7 +24,7 @@
             </div>
             <ul class="navbar-links">
               <li class="active"><a href="/home">Home</a></li>
-              <li><a href="/clips">Clips</a></li>
+              <li><a href="/facts">Facts</a></li>
               <li>
                 <form class="navbar-search" action="/search" method="get">
                   <input type="text" name="q" placeholder="Search...">
@@ -32,18 +32,14 @@
                 </form>
               </li>
               <div class="wrapper-profile">
-                <li class="nickname-cont">
-                  <% if (user && user.role==='admin' ) { %>
-                    <a href="/admin">Admin</a>
-                    <% } else { %>
-                      <a href="/home">
-                        <%= user.username %>
-                      </a>
-                      <% } %>
-                </li>
-                <li>
-                  <a href="/logout">Logout</a>
-                </li>
+                <% if (user) { %>
+                  <li class="nickname-cont">
+                    <a href="/home">
+                      <%= user.username %>
+                    </a>
+                    <a href="/logout">Logout</a>
+                  </li>
+                  <% } %>
               </div>
             </ul>
           </div>
@@ -55,22 +51,33 @@
   <main class="main">
     <section class="main_section">
       <div class="section-wrapper">
-        <div class="music-line-container1">
+        <div>
           <div class="music-line-header">
-            <h2>Today's recommendations</h2>
+            <h2>Search Results</h2>
           </div>
-          <div id="slider" class="slick-slider-content">
-            <% tracks1.forEach((track)=> { %>
-              <div class="slick-slide">
-                <img src="<%= track.image %>" alt="<%= track.title %>">
-                <h3>
-                  <%= track.title %>
-                </h3>
-              </div>
-              <% }); %>
+          <div class="tracks-container">
+            <% if (data.tracks) { %>
+              <ul class="search-wrapper">
+                <% data.tracks.hits.forEach(function(track) { %>
+                  <li class="track-container">
+                    <img src="<%= track.images.default %>" class="track-image" alt="Track Image">
+                    <div>
+                      <h3 class="track-title">
+                        <%= track.heading.title %>
+                      </h3>
+                      <p class="track-subtitle">
+                        <%= track.heading.subtitle %>
+                      </p>
+                    </div>
+                  </li>
+                  <% }); %>
+              </ul>
+              <% } %>
           </div>
+
         </div>
       </div>
+    </section>
   </main>
 
 

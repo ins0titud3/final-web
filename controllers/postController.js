@@ -24,15 +24,14 @@ exports.getPosts = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   try {
-    console.log('params', req.params)
-    console.log('body', req.body)
     const { title } = req.params
-    const { new_title, description, images } = req.body
-
+    const { description, images } = req.body
+    const new_title = req.body.newTitle
+    console.log('Params:', req.params)
+    console.log('Body:', req.body)
     if (!new_title || !description || !images) {
       throw new Error('Invalid request body')
     }
-
     const updatedPost = await Post.findOneAndUpdate(
       { title: title },
       { title: new_title, description: description, images: images, updatedAt: Date.now() },
@@ -48,6 +47,7 @@ exports.updatePost = async (req, res) => {
     res.status(500).json({ error: error.message })
   }
 }
+
 exports.deletePost = async (req, res) => {
   try {
     const { title } = req.params

@@ -6,16 +6,19 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 const dotenv = require('dotenv')
-const User = require('./models/user.js') // Подключаем модель пользователя
-const authController = require('./controllers/authController.js') // Подключаем контроллер аутентификации
+const request = require('request')
+const User = require('./models/user.js')
+const authController = require('./controllers/authController.js')
 const flash = require('express-flash')
 const axios = require('axios')
 const postController = require('./controllers/postController')
 const postRoutes = require('./routes/post')
+const bodyParser = require('body-parser')
 
 dotenv.config()
 
 const app = express()
+app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
 app.set('view engine', 'ejs')
 app.use(flash())
@@ -65,7 +68,6 @@ app.get('/home', async (req, res) => {
   }
 
   try {
-    // Запрос к первому API для рекомендаций музыки
     const options1 = {
       method: 'GET',
       url: 'https://shazam.p.rapidapi.com/charts/track',
@@ -80,12 +82,11 @@ app.get('/home', async (req, res) => {
       },
     }
 
-    // Запрос к второму API для жанров музыки
     const options2 = {
       method: 'GET',
       url: 'https://shazam-core7.p.rapidapi.com/charts/get-top-songs-in_world_by_genre',
       params: {
-        genre: req.query.genre || 'pop', // Если жанр не выбран, то по умолчанию выбираем House
+        genre: req.query.genre || 'pop',
         limit: '10',
       },
       headers: {
@@ -94,28 +95,51 @@ app.get('/home', async (req, res) => {
       },
     }
 
-    // Выполнение обоих запросов параллельно
     const [response1, response2] = await Promise.all([
       axios.request(options1),
       axios.request(options2),
     ])
 
-    // Преобразование данных из первого API
     const tracks1 = response1.data.tracks.map(track => ({
       image: track.images.coverarthq,
       title: track.title,
       audio: track.hub.actions.find(action => action.type === 'applemusicplay').uri,
     }))
 
-    // Преобразование данных из второго API
     const tracks2 = response2.data.tracks.map(track => ({
       image: track.images.coverarthq,
       title: track.title,
       audio: track.hub.actions.find(action => action.type === 'applemusicplay').uri,
     }))
-    // Получаем обновленный список постов и передаем его в шаблон
+
     const posts = await postController.getPosts(req, res)
     res.render('home.ejs', { user: req.session.user, tracks1, tracks2, posts })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.get('/search', async (req, res) => {
+  try {
+    const options = {
+      method: 'GET',
+      url: 'https://shazam-core7.p.rapidapi.com/search',
+      params: {
+        term: req.query.q,
+        limit: '10',
+      },
+      headers: {
+        'X-RapidAPI-Key': '29b4b81962msh12c666fcf3fcabep10bc3djsn03be47fc0c0f',
+        'X-RapidAPI-Host': 'shazam-core7.p.rapidapi.com',
+      },
+    }
+
+    const response = await axios.request(options)
+    const data = response.data
+
+    const user = req.session.user ? req.session.user : undefined
+    res.render('search', { user, data })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: error.message })
@@ -137,12 +161,54 @@ app.post('/admin/create', postController.createPost)
 app.get('/admin/get', postController.getPosts)
 
 // Update post
-app.post('/admin/update', postController.updatePost)
+app.post('/admin/update/:title', postController.updatePost)
 
 // Delete post
-app.delete('/admin/delete', postController.deletePost)
+app.delete('/admin/delete/:title', postController.deletePost)
 
 app.use('/api', postRoutes)
+
+app.get('/', (req, res) => {
+  res.render('welcome')
+})
+
+app.get('/facts', (req, res) => {
+  res.render('facts', { user: req.session.user, data: null, messages: null })
+})
+
+app.post('/facts', (req, res) => {
+  const name = req.body.name
+  const API_KEY = 'lG3abvXkBnK8xw10h9oMtA==vKhoR11EJivjEoAA'
+
+  request.get(
+    {
+      url: `https://api.api-ninjas.com/v1/celebrity?name=${name}`,
+      headers: {
+        'X-Api-Key': API_KEY,
+      },
+    },
+    (error, response, body) => {
+      if (error) {
+        console.error('Request failed:', error)
+        req.flash('error', 'Failed to fetch celebrity information.')
+        res.redirect('/facts')
+      } else if (response.statusCode !== 200) {
+        console.error('Error:', response.statusCode, body)
+        req.flash('error', `Error: ${response.statusCode} - ${body}`)
+        res.redirect('/facts')
+      } else {
+        try {
+          const data = JSON.parse(body)
+          res.render('facts', { data, user: req.session.user, messages: req.flash('error') })
+        } catch (error) {
+          console.error('Error parsing response:', error)
+          req.flash('error', 'Failed to parse celebrity data.')
+          res.redirect('/facts')
+        }
+      }
+    }
+  )
+})
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}`)

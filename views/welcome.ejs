@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to BeatLab</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/fonts.css">
+  <style>
+    .main_section {
+      text-align: center;
+      color: white;
+    }
+
+    .section-wrapper {
+      margin-top: 70px;
+    }
+
+    #beat {
+      color: rgb(10, 157, 10);
+    }
+  </style>
+</head>
+</head>
+
+<body>
+  <header class="header">
+    <section class="header_section">
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-default">
+          <div class="container-navbar">
+            <div class="navbar-logo">
+              <a class="navbar-brand" href="/home">
+                <img src="/images/logos.svg" alt="logo">
+              </a>
+            </div>
+            <ul class="navbar-links">
+              <li class="active"><a href="/home">Home</a></li>
+              <li><a href="/">Facts</a></li>
+              <li>
+                <form class="navbar-search" action="/" method="get">
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit"><img src="/images/search.png" alt="Search"></button>
+                </form>
+              </li>
+              <li><a href="/signup">Sign Up</a></li>
+              <li><a href="/login">Login</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <main class="main">
+    <section class="main_section">
+      <div class="section-wrapper">
+        <h1>Welcome to <span id="beat">BeatLab</span>
+        </h1>
+        <p><span id="beat">BeatLab</span> is a music recommendation service that helps you discover new music based on
+          your preferences.</p>
+        <p>To use the full functionality of the site, please <a href="/signup">sign up</a> or <a href="/login">log
+            in</a> to your account.</p>
+        <p>BeatLab uses advanced algorithms to analyze your listening habits and suggest tracks you might like. With our
+          service, you can explore new genres, discover hidden gems</p>
+        <p>Our team of music enthusiasts is constantly updating our database to ensure you have access to the latest
+          tracks and artists. Whether you're a casual listener or a hardcore music aficionado, BeatLab has something for
+          everyone.</p>
+        <p>Join our community today and start your musical journey with <span id="beat">BeatLab!</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <section class="footer_section"></section>
+  </footer>
+</body>
+
+</html>

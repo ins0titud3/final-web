@@ -82,6 +82,8 @@ body {
 
 .nickname-cont {
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 .navbar-search {
   margin: 0 10px;
@@ -382,4 +384,38 @@ body {
 .albums-header {
   color: white;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+/*для треков на поисковике*/
+
+.tracks-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tracks-container li {
+  display: block;
+  margin-bottom: 25px;
+  width: 25%; /* Ширина блока трека */
+}
+
+/* Уменьшаем размер изображения трека */
+.tracks-container img {
+  width: 100%;
+  height: auto;
+}
+
+/* Стилизуем заголовок и подзаголовок */
+.tracks-container h3,
+.tracks-container p {
+  color: white; /* Цвет текста */
+  font-size: 14px; /* Размер шрифта */
+  margin: 0;
+  padding: 5px 0;
+}
+.search-wrapper .line-search {
+  border-radius: 25px solid Black;
+  -webkit-border-radius: 25px solid Black;
+  -moz-border-radius: 25px solid Black;
+  -ms-border-radius: 25px solid Black;
+  -o-border-radius: 25px solid Black;
 }

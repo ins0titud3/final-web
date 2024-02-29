@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../public/images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/fonts.css">
+  <title>BeatLab</title>
+</head>
+
+<body>
+  <header class="header">
+    <section class="header_section">
+      <div class="navbar-wrapper">
+        <nav class="navbar navbar-default">
+          <div class="container-navbar">
+            <div class="navbar-logo">
+              <a class="navbar-brand" href="/home">
+                <img src="/images/logos.svg" alt="logo">
+              </a>
+            </div>
+            <ul class="navbar-links">
+              <li class="active"><a href="/home">Home</a></li>
+              <li><a href="/facts">Facts</a></li>
+              <li>
+                <form class="navbar-search" action="/search" method="get">
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit"><img src="/images/search.png" alt="Search"></button>
+                </form>
+              </li>
+              <div class="wrapper-profile">
+                <li class="nickname-cont">
+                  <% if (user && user.role==='admin' ) { %>
+                    <a href="/admin">Admin</a>
+                    <% } else { %>
+                      <a href="/home">
+                        <%= user.username %>
+                      </a>
+                      <% } %>
+                </li>
+                <li>
+                  <a href="/logout">Logout</a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </header>
+
+  <main class="main">
+    <section class="main_section">
+      <div class="section-wrapper">
+        <h1>Facts</h1>
+        <form action="/facts" method="POST">
+          <label for="name">Search Celebrity:</label>
+          <input type="text" id="name" name="name" required>
+          <button type="submit">Search</button>
+        </form>
+        <% if (data) { %>
+          <h2>
+            <%= data.name %>
+          </h2>
+          <p>Net Worth: <%= data.net_worth %>
+          </p>
+          <p>Gender: <%= data.gender %>
+          </p>
+          <p>Nationality: <%= data.nationality %>
+          </p>
+
+          <% if (data.occupation) { %>
+            <p>Occupation: <%= data.occupation.join(', ') %></p>
+          <% } else { %>
+            <p>Occupation: Not available</p>
+          <% } %>
+        
+          <p>Height: <%= data.height %>m</p>
+          <p>Birthday: <%= data.birthday %></p>
+          <p>Age: <%= data.age %></p>
+          <p>Is Alive: <%= data.is_alive %></p>
+        <% } else { %>
+          <p>No results found.</p>
+        <% } %>
+            <% if (messages) { %>
+              <p class="error">
+                <%= messages %>
+              </p>
+              <% } %>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <section class="footer_section"></section>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
